@@ -8,7 +8,9 @@ function NavItem({ to, label, end }) {
     <NavLink
       to={to}
       end={end}
-      className={({ isActive }) => (isActive ? "nav__link nav__link--active" : "nav__link")}
+      className={({ isActive }) =>
+        isActive ? "nav__link nav__link--active" : "nav__link"
+      }
     >
       {label}
     </NavLink>
@@ -29,7 +31,7 @@ export default function Navbar() {
       <div className="nav__inner">
         <div className="nav__brand">
           <span className="nav__logo" aria-hidden="true" />
-          <span className="nav__title">Student Tracker</span>
+          <span className="nav__title">ORBIT</span>
         </div>
 
         <div className="nav__links">
@@ -43,7 +45,12 @@ export default function Navbar() {
           <button className="btn btn--nav" type="button" onClick={logout}>
             Logout
           </button>
-          <button className="btn btn--nav" type="button" onClick={toggleTheme} aria-label="Toggle theme">
+          <button
+            className="btn btn--nav"
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
             {theme === "dark" ? "Light" : "Dark"}
           </button>
         </div>
@@ -51,4 +58,3 @@ export default function Navbar() {
     </motion.nav>
   );
 }
-

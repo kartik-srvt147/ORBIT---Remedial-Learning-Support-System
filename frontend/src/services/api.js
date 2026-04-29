@@ -3,7 +3,7 @@ import axios from "axios";
 export const AUTH_TOKEN_KEY = "auth.token";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: "http://localhost:8000",
   headers: {
     Accept: "application/json",
   },
@@ -58,4 +58,3 @@ export const getSlowLearners = () => get("/api/dashboard/slow-learners");
 export const getRecommendations = () => get("/api/dashboard/recommendations");
 
 export default api;
-
