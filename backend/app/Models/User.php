@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Student;
+use App\Models\TeacherNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -59,5 +60,15 @@ class User extends Authenticatable
     public function student(): HasOne
     {
         return $this->hasOne(Student::class, 'user_id');
+    }
+
+    public function teacherNotifications(): HasMany
+    {
+        return $this->hasMany(TeacherNotification::class, 'teacher_id');
+    }
+
+    public function teacherSubjects(): HasMany
+    {
+        return $this->hasMany(TeacherSubject::class, 'teacher_id');
     }
 }

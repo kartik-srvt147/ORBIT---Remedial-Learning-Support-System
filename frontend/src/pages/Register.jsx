@@ -11,7 +11,6 @@ export default function Register() {
     email: "",
     password: "",
     password_confirmation: "",
-    role: "student",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,15 +56,6 @@ export default function Register() {
         </label>
 
         <label className="authLabel">
-          Role
-          <select className="authInput" name="role" value={form.role} onChange={onChange}>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="admin">Admin</option>
-          </select>
-        </label>
-
-        <label className="authLabel">
           Password
           <input
             className="authInput"
@@ -102,4 +92,3 @@ export default function Register() {
     </div>
   );
 }
-

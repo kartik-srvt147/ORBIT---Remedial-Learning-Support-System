@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Assessment;
 use App\Models\Attendance;
+use App\Models\Section;
 use App\Models\Student;
+use App\Models\StudentSection;
 use App\Models\Subject;
+use App\Models\TeacherSubject;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -17,6 +20,13 @@ class SchoolDemoSeeder extends Seeder
         $subjects = collect(['Mathematics', 'Science', 'English', 'Social Studies'])
             ->map(fn (string $name) => Subject::query()->firstOrCreate(['name' => $name]));
 
+        $sections = collect(range(6, 10))->flatMap(function (int $classNumber) {
+            return collect(['A', 'B'])->map(fn (string $sectionName) => Section::query()->firstOrCreate([
+                'class_name' => (string) $classNumber,
+                'section_name' => $sectionName,
+            ]));
+        })->values();
+
         $teachers = collect(range(1, 5))->map(function (int $index) {
             return User::query()->create([
                 'name' => "Teacher {$index}",
@@ -26,18 +36,42 @@ class SchoolDemoSeeder extends Seeder
             ]);
         });
 
-        $students = collect(range(1, 20))->map(function (int $index) use ($teachers) {
+        foreach ($teachers as $teacherIndex => $teacher) {
+            foreach ($subjects as $subjectIndex => $subject) {
+                $section = $sections[($teacherIndex + $subjectIndex) % $sections->count()];
+                TeacherSubject::query()->firstOrCreate([
+                    'teacher_id' => $teacher->id,
+                    'subject_id' => $subject->id,
+                    'section_id' => $section->id,
+                ]);
+            }
+        }
+
+        $students = collect(range(1, 20))->map(function (int $index) use ($teachers, $sections) {
             $teacher = $teachers[($index - 1) % $teachers->count()];
-            $classNumber = 6 + (($index - 1) % 5);
-            $section = chr(65 + (($index - 1) % 2)); // A/B
+            $section = $sections[($index - 1) % $sections->count()];
+            $studentUser = User::query()->create([
+                'name' => "Student {$index}",
+                'email' => "student{$index}@school.test",
+                'password' => 'password',
+                'role' => 'student',
+            ]);
 
             return Student::query()->create([
                 'teacher_id' => $teacher->id,
+                'user_id' => $studentUser->id,
                 'name' => "Student {$index}",
-                'class' => (string) $classNumber,
-                'section' => $section,
+                'class' => $section->class_name,
+                'section' => $section->section_name,
                 'roll_number' => $index,
             ]);
+
+            StudentSection::query()->firstOrCreate([
+                'student_id' => $student->id,
+                'section_id' => $section->id,
+            ]);
+
+            return $student;
         });
 
         foreach ($students as $studentIndex => $student) {

@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\Models\StudentFlag;
+use App\Models\TeacherNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -71,14 +72,23 @@ class SlowLearnerService
     public function updateStudentFlag(int $studentId): StudentFlag
     {
         $isSlowLearner = $this->isSlowLearner($studentId);
+        $previousFlag = StudentFlag::query()
+            ->where('student_id', $studentId)
+            ->first();
 
-        return StudentFlag::query()->updateOrCreate(
+        $flag = StudentFlag::query()->updateOrCreate(
             ['student_id' => $studentId],
             [
                 'is_slow_learner' => $isSlowLearner,
                 'last_evaluated_at' => Carbon::now(),
             ]
         );
+
+        if ($isSlowLearner && ! (bool) ($previousFlag?->is_slow_learner)) {
+            $this->notifyTeacherAboutSlowLearner($studentId);
+        }
+
+        return $flag;
     }
 
     public function evaluateAllStudents(): int
@@ -108,8 +118,19 @@ class SlowLearnerService
                     ->get()
                     ->keyBy('student_id');
 
+                $previousFlags = StudentFlag::query()
+                    ->whereIn('student_id', $studentIds)
+                    ->pluck('is_slow_learner', 'student_id');
+
+                $studentsById = Student::query()
+                    ->select('id', 'teacher_id', 'name')
+                    ->whereIn('id', $studentIds)
+                    ->get()
+                    ->keyBy('id');
+
                 $now = Carbon::now();
                 $rows = [];
+                $newSlowLearnerIds = [];
 
                 foreach ($studentIds as $studentId) {
                     $assessment = $assessmentStats->get($studentId);
@@ -123,13 +144,19 @@ class SlowLearnerService
                     $presentDays = (int) ($attendance->present_days ?? 0);
                     $attendancePercentage = $totalDays > 0 ? (($presentDays / $totalDays) * 100) : 0.0;
 
+                    $isSlowLearner = $averageMarks < 40 || $attendancePercentage < 75;
+
                     $rows[] = [
                         'student_id' => $studentId,
-                        'is_slow_learner' => $averageMarks < 40 || $attendancePercentage < 75,
+                        'is_slow_learner' => $isSlowLearner,
                         'last_evaluated_at' => $now,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ];
+
+                    if ($isSlowLearner && ! (bool) $previousFlags->get($studentId, false)) {
+                        $newSlowLearnerIds[] = $studentId;
+                    }
                 }
 
                 StudentFlag::query()->upsert(
@@ -138,9 +165,35 @@ class SlowLearnerService
                     ['is_slow_learner', 'last_evaluated_at', 'updated_at']
                 );
 
+                foreach ($newSlowLearnerIds as $studentId) {
+                    $student = $studentsById->get($studentId);
+                    if ($student) {
+                        $this->notifyTeacherAboutSlowLearner((int) $student->id, $student);
+                    }
+                }
+
                 $evaluatedCount += count($rows);
             });
 
         return $evaluatedCount;
+    }
+
+    private function notifyTeacherAboutSlowLearner(int $studentId, ?Student $student = null): void
+    {
+        $student ??= Student::query()
+            ->select('id', 'teacher_id', 'name')
+            ->find($studentId);
+
+        if (! $student?->teacher_id) {
+            return;
+        }
+
+        TeacherNotification::query()->create([
+            'teacher_id' => $student->teacher_id,
+            'student_id' => $student->id,
+            'type' => 'slow_learner',
+            'title' => 'Student flagged as slow learner',
+            'message' => "{$student->name} now meets the slow learner criteria and needs follow-up.",
+        ]);
     }
 }

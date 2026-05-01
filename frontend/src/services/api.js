@@ -52,9 +52,50 @@ const get = async (url, config) => {
   }
 };
 
+const post = async (url, payload, config) => {
+  try {
+    const res = await api.post(url, payload, config);
+    return res.data;
+  } catch (err) {
+    throw normalizeAxiosError(err);
+  }
+};
+
 // Dashboard APIs
-export const getDashboardSummary = () => get("/api/dashboard/summary");
-export const getSlowLearners = () => get("/api/dashboard/slow-learners");
-export const getRecommendations = () => get("/api/dashboard/recommendations");
+export const getCurrentUser = () => get("/api/user");
+export const getDashboardSummary = (params) => get("/api/dashboard/summary", { params });
+export const getStudents = (params) => get("/api/dashboard/students", { params });
+export const getStudentDetails = async (studentId) => {
+  const user = JSON.parse(localStorage.getItem("auth.user") || "null");
+  if (user?.role === "teacher") {
+    return get(`/api/teacher/students/${studentId}/performance`);
+  }
+  return get(`/api/dashboard/students/${studentId}`);
+};
+export const getSlowLearners = (params) => get("/api/dashboard/slow-learners", { params });
+export const getRecommendations = (params) => get("/api/dashboard/recommendations", { params });
+export const getAnalytics = (params) => get("/api/dashboard/analytics", { params });
+export const getStudentPerformanceTrends = (studentId, params) =>
+  get(`/api/dashboard/students/${studentId}/performance-trends`, { params });
+export const getNotifications = (params) => get("/api/notifications", { params });
+export const getMyStudentData = () => get("/api/student/me");
+export const changePassword = (payload) => post("/api/change-password", payload);
+
+// Admin APIs
+export const getAdminOverview = () => get("/api/admin/overview");
+export const createTeacher = (payload) => post("/api/admin/teachers", payload);
+export const createStudent = (payload) => post("/api/admin/students", payload);
+export const createSubject = (payload) => post("/api/admin/subjects", payload);
+export const createSection = (payload) => post("/api/admin/sections", payload);
+export const assignTeacherToSubjectSection = (payload) => post("/api/admin/teacher-subjects", payload);
+export const assignStudentToSection = (payload) => post("/api/admin/student-sections", payload);
+
+// Teacher APIs
+export const getTeacherSections = () => get("/api/teacher/sections");
+export const getTeacherStudents = () => get("/api/teacher/students");
+export const getTeacherSubjectPerformance = () => get("/api/teacher/subject-performance");
+export const getTeacherStudentPerformance = (studentId) => get(`/api/teacher/students/${studentId}/performance`);
+export const addTeacherRemedialAction = (studentId, payload) =>
+  post(`/api/teacher/students/${studentId}/remedial-actions`, payload);
 
 export default api;

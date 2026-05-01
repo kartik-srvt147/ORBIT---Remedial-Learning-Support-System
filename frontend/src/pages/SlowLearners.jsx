@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { getSlowLearners } from "../services/api.js";
 
 function formatPercent(value) {
@@ -152,7 +153,11 @@ export default function SlowLearners() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.25 }}
                           >
-                            <td className="strong">{s.student_name}</td>
+                            <td className="strong">
+                              <Link className="tableLink" to={`/students/${s.student_id}`}>
+                                {s.student_name}
+                              </Link>
+                            </td>
                             <td className="mono">{formatPercent(s.average_marks)}</td>
                             <td className="mono">{formatPercent(s.attendance_percentage)}</td>
                             <td>
@@ -175,4 +180,3 @@ export default function SlowLearners() {
     </div>
   );
 }
-

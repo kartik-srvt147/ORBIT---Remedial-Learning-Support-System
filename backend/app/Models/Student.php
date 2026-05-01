@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Attendance;
 use App\Models\RemedialAction;
 use App\Models\StudentFlag;
+use App\Models\TeacherNotification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -51,5 +52,21 @@ class Student extends Model
     public function flag(): HasOne
     {
         return $this->hasOne(StudentFlag::class);
+    }
+
+    public function teacherNotifications(): HasMany
+    {
+        return $this->hasMany(TeacherNotification::class);
+    }
+
+    public function studentSections(): HasMany
+    {
+        return $this->hasMany(StudentSection::class);
+    }
+
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'student_sections')
+            ->withTimestamps();
     }
 }

@@ -40,13 +40,12 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const register = async ({ name, email, password, password_confirmation, role = "student" }) => {
+  const register = async ({ name, email, password, password_confirmation }) => {
     const { data } = await api.post("/api/register", {
       name,
       email,
       password,
       password_confirmation,
-      role,
     });
     persistAuth(data.token, data.user);
     return data;
@@ -82,4 +81,3 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
-

@@ -22,4 +22,9 @@ class Subject extends Model
     {
         return $this->hasMany(RemedialAction::class);
     }
+
+    public function teacherSubjects(): HasMany
+    {
+        return $this->hasMany(TeacherSubject::class);
+    }
 }

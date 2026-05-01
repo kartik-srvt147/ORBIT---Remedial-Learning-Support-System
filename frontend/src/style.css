@@ -642,3 +642,300 @@ html[data-theme="light"] .authInput {
   margin: 0;
   font-size: 14px;
 }
+
+/* Role dashboards + profile */
+.roleGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.rolePanel {
+  grid-column: span 6;
+}
+
+.quickLinks {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quickLinks .btn {
+  text-decoration: none;
+}
+
+.quickLinks--spaced {
+  margin-top: 14px;
+}
+
+.miniList {
+  display: grid;
+  gap: 10px;
+}
+
+.miniItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.miniItem--stack {
+  display: grid;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profileAvatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: var(--text-strong);
+  font-weight: 800;
+  font-size: 22px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(251, 113, 133, 0.20));
+  border: 1px solid var(--border);
+}
+
+.profileName {
+  color: var(--text-strong);
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.profileRole {
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+.profileFacts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.profileFacts > div {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.profileFacts strong {
+  color: var(--text-strong);
+}
+
+.adminForms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.adminForm {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.adminForm__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* Filters, charts, and student detail */
+.filterBar {
+  display: grid;
+  grid-template-columns: 130px 130px minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  box-shadow: var(--shadow);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.filterField {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.filterField input,
+.chartSelect {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text-strong);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .filterField input,
+html[data-theme="light"] .chartSelect {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.chartPanel {
+  grid-column: span 6;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  box-shadow: var(--shadow);
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.chartPanel--wide {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+}
+
+.chartPanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.chartBox {
+  height: 260px;
+  color: var(--text);
+}
+
+.chartBox--tall {
+  height: 340px;
+}
+
+.emptyChart {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+.studentCards {
+  display: grid;
+  gap: 10px;
+}
+
+.studentMiniCard {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.studentMiniCard:hover,
+.tableLink:hover {
+  border-color: rgba(139, 92, 246, 0.45);
+  color: var(--text-strong);
+}
+
+.tableLink {
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.studentHero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(251, 113, 133, 0.10)),
+    linear-gradient(180deg, var(--panel), var(--panel-2));
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.studentHero__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--text-strong);
+  font-weight: 900;
+  font-size: 26px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.studentHero__name {
+  color: var(--text-strong);
+  font-size: 24px;
+  font-weight: 850;
+}
+
+.studentHero .pill {
+  margin-left: auto;
+}
+
+.chips--large .chip {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .rolePanel { grid-column: span 12; }
+  .adminForms { grid-template-columns: 1fr; }
+  .filterBar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filterField--wide { grid-column: span 2; }
+  .chartPanel { grid-column: span 12; }
+}
+
+@media (max-width: 560px) {
+  .miniItem { flex-direction: column; }
+  .profileFacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filterBar { grid-template-columns: 1fr; }
+  .filterField--wide { grid-column: span 1; }
+  .studentMiniCard,
+  .studentHero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .adminForm__grid { grid-template-columns: 1fr; }
+  .studentHero .pill { margin-left: 0; }
+}

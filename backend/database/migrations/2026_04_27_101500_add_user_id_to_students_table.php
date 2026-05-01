@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table): void {
             $table->foreignId('user_id')
-                ->nullable()
                 ->unique()
                 ->after('teacher_id')
                 ->constrained('users')
@@ -26,4 +25,3 @@ return new class extends Migration
         });
     }
 };
-
