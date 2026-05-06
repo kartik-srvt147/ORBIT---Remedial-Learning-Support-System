@@ -7,9 +7,11 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import TeacherDashboard from "./pages/TeacherDashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import StudentDetail from "./pages/StudentDetail.jsx";
+import AdminResources from "./pages/AdminResources.jsx";
+import AdminCrudPage from "./pages/AdminCrudPage.jsx";
+import AdminSectionDetail from "./pages/AdminSectionDetail.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/auth.jsx";
 
@@ -38,11 +40,6 @@ export default function App() {
         path="/login"
         element={isAuthenticated ? <Navigate to={homeForRole(user?.role)} replace /> : <Login />}
       />
-      <Route
-        path="/register"
-        element={isAuthenticated ? <Navigate to={homeForRole(user?.role)} replace /> : <Register />}
-      />
-
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to={homeForRole(user?.role)} replace />} />
         <Route
@@ -61,6 +58,30 @@ export default function App() {
           element={
             <WithNavbar>
               <AdminDashboard />
+            </WithNavbar>
+          }
+        />
+        <Route
+          path="/admin/resources"
+          element={
+            <WithNavbar>
+              <AdminResources />
+            </WithNavbar>
+          }
+        />
+        <Route
+          path="/admin/:resource"
+          element={
+            <WithNavbar>
+              <AdminCrudPage />
+            </WithNavbar>
+          }
+        />
+        <Route
+          path="/admin/sections/:id"
+          element={
+            <WithNavbar>
+              <AdminSectionDetail />
             </WithNavbar>
           }
         />

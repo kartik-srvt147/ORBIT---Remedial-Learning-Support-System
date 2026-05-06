@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/auth.jsx";
 
@@ -62,12 +62,7 @@ export default function Login() {
         <button className="btn btn--primary authBtn" type="submit" disabled={loading}>
           {loading ? "Signing in..." : "Login"}
         </button>
-
-        <p className="muted authFoot">
-          No account? <Link to="/register">Create one</Link>
-        </p>
       </motion.form>
     </div>
   );
 }
-

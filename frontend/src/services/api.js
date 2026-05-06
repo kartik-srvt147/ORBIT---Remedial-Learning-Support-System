@@ -61,6 +61,24 @@ const post = async (url, payload, config) => {
   }
 };
 
+const put = async (url, payload, config) => {
+  try {
+    const res = await api.put(url, payload, config);
+    return res.data;
+  } catch (err) {
+    throw normalizeAxiosError(err);
+  }
+};
+
+const destroy = async (url, config) => {
+  try {
+    const res = await api.delete(url, config);
+    return res.data;
+  } catch (err) {
+    throw normalizeAxiosError(err);
+  }
+};
+
 // Dashboard APIs
 export const getCurrentUser = () => get("/api/user");
 export const getDashboardSummary = (params) => get("/api/dashboard/summary", { params });
@@ -83,10 +101,23 @@ export const changePassword = (payload) => post("/api/change-password", payload)
 
 // Admin APIs
 export const getAdminOverview = () => get("/api/admin/overview");
+export const getAdminTeachers = (params) => get("/api/admin/teachers", { params });
 export const createTeacher = (payload) => post("/api/admin/teachers", payload);
+export const updateTeacher = (id, payload) => put(`/api/admin/teachers/${id}`, payload);
+export const deleteTeacher = (id) => destroy(`/api/admin/teachers/${id}`);
+export const getAdminStudents = (params) => get("/api/admin/students", { params });
 export const createStudent = (payload) => post("/api/admin/students", payload);
+export const updateStudent = (id, payload) => put(`/api/admin/students/${id}`, payload);
+export const deleteStudent = (id) => destroy(`/api/admin/students/${id}`);
+export const getAdminSubjects = (params) => get("/api/admin/subjects", { params });
 export const createSubject = (payload) => post("/api/admin/subjects", payload);
+export const updateSubject = (id, payload) => put(`/api/admin/subjects/${id}`, payload);
+export const deleteSubject = (id) => destroy(`/api/admin/subjects/${id}`);
+export const getAdminSections = (params) => get("/api/admin/sections", { params });
 export const createSection = (payload) => post("/api/admin/sections", payload);
+export const getAdminSection = (id) => get(`/api/admin/sections/${id}`);
+export const updateSection = (id, payload) => put(`/api/admin/sections/${id}`, payload);
+export const deleteSection = (id) => destroy(`/api/admin/sections/${id}`);
 export const assignTeacherToSubjectSection = (payload) => post("/api/admin/teacher-subjects", payload);
 export const assignStudentToSection = (payload) => post("/api/admin/student-sections", payload);
 

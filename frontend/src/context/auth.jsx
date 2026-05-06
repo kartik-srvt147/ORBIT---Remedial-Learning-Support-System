@@ -40,17 +40,6 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const register = async ({ name, email, password, password_confirmation }) => {
-    const { data } = await api.post("/api/register", {
-      name,
-      email,
-      password,
-      password_confirmation,
-    });
-    persistAuth(data.token, data.user);
-    return data;
-  };
-
   const logout = async () => {
     try {
       await api.post("/api/logout");
@@ -67,7 +56,6 @@ export function AuthProvider({ children }) {
       user,
       isAuthenticated,
       login,
-      register,
       logout,
     }),
     [token, user, isAuthenticated]

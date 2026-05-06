@@ -8,7 +8,6 @@ use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -20,10 +19,23 @@ Route::middleware(['auth:sanctum'])->post('/change-password', [AuthController::c
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function (): void {
     Route::get('/overview', [AdminController::class, 'overview']);
+    Route::get('/teachers', [AdminController::class, 'teachers']);
     Route::post('/teachers', [AdminController::class, 'createTeacher']);
+    Route::put('/teachers/{teacher}', [AdminController::class, 'updateTeacher']);
+    Route::delete('/teachers/{teacher}', [AdminController::class, 'deleteTeacher']);
+    Route::get('/students', [AdminController::class, 'students']);
     Route::post('/students', [AdminController::class, 'createStudent']);
+    Route::put('/students/{student}', [AdminController::class, 'updateStudent']);
+    Route::delete('/students/{student}', [AdminController::class, 'deleteStudent']);
+    Route::get('/subjects', [AdminController::class, 'subjects']);
     Route::post('/subjects', [AdminController::class, 'createSubject']);
+    Route::put('/subjects/{subject}', [AdminController::class, 'updateSubject']);
+    Route::delete('/subjects/{subject}', [AdminController::class, 'deleteSubject']);
+    Route::get('/sections', [AdminController::class, 'sections']);
     Route::post('/sections', [AdminController::class, 'createSection']);
+    Route::get('/sections/{section}', [AdminController::class, 'showSection']);
+    Route::put('/sections/{section}', [AdminController::class, 'updateSection']);
+    Route::delete('/sections/{section}', [AdminController::class, 'deleteSection']);
     Route::post('/teacher-subjects', [AdminController::class, 'assignTeacher']);
     Route::post('/student-sections', [AdminController::class, 'assignStudent']);
 });

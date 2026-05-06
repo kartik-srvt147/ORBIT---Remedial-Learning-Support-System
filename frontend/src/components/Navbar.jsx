@@ -36,6 +36,7 @@ function navItemsForRole(role) {
 
   return [
     { to: "/admin", label: "Admin home", end: true },
+    { to: "/admin/resources", label: "Resources" },
     { to: "/analytics", label: "Analytics" },
     { to: "/slow-learners", label: "Slow learners" },
     { to: "/recommendations", label: "Recommendations" },
